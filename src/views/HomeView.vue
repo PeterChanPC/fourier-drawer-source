@@ -1,5 +1,5 @@
 <template>
-  <button @click="start" class="fixed b-10 l-10">Play</button>
+  <button @click="start" class="fixed bdvh-5/10 ldvw-5/10">Play</button>
   <div class="page flex a-center j-center z--1">
     <div ref="svgContainer" v-html="noteSvg" v-show="false"></div>
     <Drawer
@@ -9,7 +9,7 @@
       :viewboxHeight="200"
       :N="N"
       :speed="speed"
-      :scale="1"
+      :scale="scale"
       :circle-stroke-width="0.3"
       :circle-stroke-opacity="0.3"
       :vector-stroke-width="0.6"
@@ -30,6 +30,7 @@ const svgContainer = useTemplateRef<HTMLDivElement>('svgContainer')
 const svgPath = ref<SVGPathElement | undefined>()
 const N = ref<number>(500)
 const speed = ref<number>(0.3)
+const scale = ref<number>(1)
 
 const isStarted = ref<boolean>(false)
 function start(): void {

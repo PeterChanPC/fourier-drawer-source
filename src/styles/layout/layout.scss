@@ -1,4 +1,4 @@
-@use "../variable" as var;
+@use '../variable' as var;
 
 // positions
 @each $position in var.$positions {
@@ -39,7 +39,7 @@
       #{$dir}: $i * 10dvw;
     }
 
-    .#{$dir-label}dwh-#{$i}\/10 {
+    .#{$dir-label}dvh-#{$i}\/10 {
       #{$dir}: $i * 10dvh;
     }
   }

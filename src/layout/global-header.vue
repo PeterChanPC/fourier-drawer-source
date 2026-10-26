@@ -17,10 +17,12 @@
       </button>
     </div>
   </header>
+  <Settings />
 </template>
 
 <script lang="ts">
 import SwitchBtn from '@/components/switch-btn.vue'
+import Settings from '@/components/settings.vue'
 import * as icons from '@/assets/img/d'
 import { useThemeStore } from '@/stores/theme.store'
 import { defineComponent } from 'vue'
@@ -29,6 +31,7 @@ export default defineComponent({
   name: 'global-header',
   components: {
     SwitchBtn,
+    Settings,
   },
   setup() {
     const themeStore = useThemeStore()
