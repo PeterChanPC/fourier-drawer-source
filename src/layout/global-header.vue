@@ -5,19 +5,14 @@
     </h1>
 
     <div class="relative flex row a-center j-around h-50 pr-16">
-      <SwitchBtn
-        class="w-50 h-50"
-        :on-switch="themeStore.switchTheme"
-        :is-active="themeStore.isDark"
-        :img-left="icons.sun"
-        :img-right="icons.moonStars"
-      />
-      <button class="relative w-50 h-50 bg-none border-none pointer user-select-none">
+      <SwitchBtn class="w-50 h-50" :on-switch="themeStore.switchTheme" :is-active="themeStore.isDark"
+        :img-left="icons.sun" :img-right="icons.moonStars" />
+      <button class="relative w-50 h-50 bg-none border-none pointer user-select-none" @click="toggleSetting">
         <img :src="icons.cog" />
       </button>
     </div>
   </header>
-  <Settings />
+  <Settings :toggled="toggled" />
 </template>
 
 <script lang="ts">
@@ -25,7 +20,7 @@ import SwitchBtn from '@/components/switch-btn.vue'
 import Settings from '@/components/settings.vue'
 import * as icons from '@/assets/img/d'
 import { useThemeStore } from '@/stores/theme.store'
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'global-header',
@@ -35,8 +30,13 @@ export default defineComponent({
   },
   setup() {
     const themeStore = useThemeStore()
+    const toggled = ref<boolean>(false)
 
-    return { icons, themeStore }
+    function toggleSetting(): void {
+      toggled.value = !toggled.value
+    }
+
+    return { icons, themeStore, toggled, toggleSetting }
   },
 })
 </script>

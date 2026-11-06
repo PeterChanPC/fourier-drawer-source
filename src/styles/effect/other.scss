@@ -32,6 +32,15 @@
   overflow: visible;
 }
 
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 // visibility
 .visible {
   visibility: visible;
@@ -66,4 +75,45 @@
 
 .pointer-none {
   pointer-events: none;
+}
+
+// input
+.no-spin-btn {
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+// transform
+.transform-origin-center {
+  transform-origin: center;
+}
+
+.transform-origin-top {
+  transform-origin: top;
+}
+
+.transform-origin-top-left {
+  transform-origin: top left;
+}
+
+.transform-origin-top-right {
+  transform-origin: top right;
+}
+
+.transform-origin-bottom {
+  transform-origin: bottom;
+}
+
+.transform-origin-bottom-left {
+  transform-origin: bottom left;
+}
+
+.transform-origin-bottom-right {
+  transform-origin: bottom right;
 }

@@ -1,71 +1,33 @@
 <template>
-  <svg
-    class="overflow-v"
-    xmlns="http://www.w3.org/2000/svg"
-    width="100%"
-    height="100%"
-    :viewBox="`0 0 ${viewboxWidth} ${viewboxHeight}`"
-  >
+  <svg class="overflow-v" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"
+    :viewBox="`0 0 ${viewboxWidth} ${viewboxHeight}`">
     <g :transform="`scale(${scale})`">
-      <circle
-        v-for="(prop, index) in circles"
-        :r="prop.r"
-        :cx="prop.cx"
-        :cy="prop.cy"
-        :key="index"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="circleStrokeWidth"
-        stroke-opacity="circleStrokeOpacity"
-      />
+      <circle v-for="(prop, index) in circles" :r="prop.r" :cx="prop.cx" :cy="prop.cy" :key="index" fill="none"
+        stroke="currentColor" stroke-width="circleStrokeWidth" stroke-opacity="circleStrokeOpacity" />
       <defs>
-        <marker
-          id="arrow"
-          :view-box="`0
+        <marker id="arrow" :view-box="`0
           0
           ${vectorStrokeWidth}
-          ${vectorStrokeWidth}`"
-          :refX="vectorStrokeWidth + 3"
-          :refY="(vectorStrokeWidth + 3) / 2"
-          :markerWidth="vectorStrokeWidth + 3"
-          :markerHeight="vectorStrokeWidth + 3"
-          orient="auto-start-reverse"
-          fill="currentColor"
-          stroke-opacity="vectorStrokeOpacity"
-        >
-          <path
-            :d="`M 0 0 L ${vectorStrokeWidth + 3} ${(vectorStrokeWidth + 3) / 2} L 0 ${vectorStrokeWidth + 3} z`"
-          />
+          ${vectorStrokeWidth}`" :refX="vectorStrokeWidth + 3" :refY="(vectorStrokeWidth + 3) / 2"
+          :markerWidth="vectorStrokeWidth + 3" :markerHeight="vectorStrokeWidth + 3" orient="auto-start-reverse"
+          fill="currentColor" stroke-opacity="vectorStrokeOpacity">
+          <path :d="`M 0 0 L ${vectorStrokeWidth + 3} ${(vectorStrokeWidth + 3) / 2} L 0 ${vectorStrokeWidth + 3} z`" />
         </marker>
       </defs>
-      <line
-        v-for="(prop, index) in vectors"
-        :x1="prop.x1"
-        :x2="prop.x2"
-        :y1="prop.y1"
-        :y2="prop.y2"
-        :key="index"
-        stroke="currentColor"
-        stroke-width="vectorStrokeWidth"
-        stroke-opacity="vectorStrokeOpacity"
-        marker-end="url(#arrow)"
-      />
-      <path
-        fill="none"
-        stroke="currentColor"
-        stroke-width="pathStrokeWidth"
-        stop-opacity="pathStrokeOpacity"
-        :d="d"
-      />
+      <line v-for="(prop, index) in vectors" :x1="prop.x1" :x2="prop.x2" :y1="prop.y1" :y2="prop.y2" :key="index"
+        stroke="currentColor" stroke-width="vectorStrokeWidth" stroke-opacity="vectorStrokeOpacity"
+        marker-end="url(#arrow)" />
+      <path fill="none" stroke="currentColor" stroke-width="pathStrokeWidth" stroke-opacity="pathStrokeOpacity"
+        :d="d" />
     </g>
   </svg>
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from 'vue'
+import { ref, defineComponent, computed } from 'vue'
 
 export default defineComponent({
-  name: 'painter',
+  name: 'drawer',
   props: {
     svgPath: {
       type: SVGPathElement,
@@ -117,6 +79,7 @@ export default defineComponent({
     },
   },
   setup(props, { expose }) {
+    console.log(props.pathStrokeWidth)
     const viewboxCenterX = props.viewboxWidth / 2
     const viewboxCenterY = props.viewboxHeight / 2
 
@@ -168,7 +131,7 @@ export default defineComponent({
 
     const circles = ref<{ r: number; cx: number; cy: number; phase: number }[]>([])
     const vectors = ref<{ x1: number; y1: number; x2: number; y2: number }[]>([])
-    const dt = (2 * Math.PI * props.speed) / props.N
+    const dt = computed(() => (2 * Math.PI * props.speed) / props.N)
     const d = ref<string>(`M `)
 
     let t = 0
@@ -193,7 +156,7 @@ export default defineComponent({
         prevCy = currCy
       }
 
-      t += dt
+      t += dt.value
 
       if (t <= 2.01 * Math.PI) {
         d.value += `${prevCx} ${prevCy} `

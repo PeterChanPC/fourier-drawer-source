@@ -21,6 +21,10 @@
   height: 100%;
 }
 
+.max-h-full {
+  max-height: 100%;
+}
+
 @for $i from 0 through 199 {
   .w-#{$i} {
     width: $i * 1px;
@@ -72,5 +76,9 @@
 
   .h-#{$i}0dvh {
     height: $i * 10dvh;
+  }
+
+  .max-h-#{$i}0dvh {
+    max-height: $i * 10dvh;
   }
 }

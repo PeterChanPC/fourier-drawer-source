@@ -1,18 +1,16 @@
 <template>
-  <button
-    class="flex row a-center j-center border-none bg-none w-32 h-32 font-size-16 pointer user-select-none"
-    @click="onSwitch"
-  >
+  <button class="flex row a-center j-center border-none bg-none w-32 h-32 font-size-16 pointer user-select-none"
+    @click="onSwitch">
     <Transition name="switch" mode="out-in">
       <div v-if="isActive">
         <div class="relative" v-if="imgRight">
-          <img :src="imgRight" />
+          <img :src="imgRight" alt="imgRight" />
         </div>
         <span v-if="textRight">{{ textRight }}</span>
       </div>
       <div v-else>
         <div class="relative" v-if="imgLeft">
-          <img :src="imgLeft" />
+          <img :src="imgLeft" alt="imgLeft" />
         </div>
         <span v-if="textLeft">{{ textLeft }}</span>
       </div>
@@ -32,7 +30,7 @@ export default defineComponent({
     },
     onSwitch: {
       type: Function as PropType<() => void>,
-      default: () => {},
+      default: () => { },
     },
     imgLeft: {
       type: String,
