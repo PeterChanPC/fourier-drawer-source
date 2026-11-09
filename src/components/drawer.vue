@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent, computed, watch } from 'vue'
+import { ref, defineComponent, computed, watch, watchEffect } from 'vue'
 
 export default defineComponent({
   name: 'drawer',
@@ -77,8 +77,12 @@ export default defineComponent({
       type: Number,
       default: 1,
     },
+    isPlaying: {
+      type: Boolean,
+      default: false,
+    },
   },
-  setup(props, { expose }) {
+  setup(props) {
     const viewboxCenterX = props.viewboxWidth / 2
     const viewboxCenterY = props.viewboxHeight / 2
 
@@ -160,7 +164,10 @@ export default defineComponent({
       if (t <= 4 * Math.PI) {
         d.value += `${prevCx} ${prevCy} `
       }
-      requestAnimationFrame(animate)
+
+      if (props.isPlaying) {
+        requestAnimationFrame(animate)
+      }
     }
 
     function startAnimation(): void {
@@ -169,7 +176,13 @@ export default defineComponent({
       animate()
     }
 
-    expose({ startAnimation })
+    const isAnimationStarted = ref<boolean>(false)
+    watchEffect(() => {
+      if (props.isPlaying && !isAnimationStarted.value) {
+        startAnimation()
+        isAnimationStarted.value = true
+      }
+    })
 
     return { circles, vectors, d }
   },

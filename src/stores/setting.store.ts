@@ -1,62 +1,61 @@
 import { defineStore } from 'pinia'
 import { ref, watchEffect } from 'vue'
 import { Setting } from './d'
+import * as utils from '@/utils/utils'
 
-function clip(val: number, min: number, max: number): number {
-  // round to 2 decimal places and clip to min and max
-  return Math.round(Math.max(min, Math.min(max, val)) * 100) / 100
-}
-
-const clipper = {
-  N: (val: number): number => clip(val, Setting.N.min, Setting.N.max),
-  Speed: (val: number): number => clip(val, Setting.Speed.min, Setting.Speed.max),
-  Scale: (val: number): number => clip(val, Setting.Scale.min, Setting.Scale.max),
+const settingClipper = {
+  N: (val: number): number => utils.clip(val, Setting.N.min, Setting.N.max),
+  Speed: (val: number): number => utils.clip(val, Setting.Speed.min, Setting.Speed.max),
+  Scale: (val: number): number => utils.clip(val, Setting.Scale.min, Setting.Scale.max),
   CircleStrokeWidth: (val: number): number =>
-    clip(val, Setting.CircleStrokeWidth.min, Setting.CircleStrokeWidth.max),
+    utils.clip(val, Setting.CircleStrokeWidth.min, Setting.CircleStrokeWidth.max),
   CircleStrokeOpacity: (val: number): number =>
-    clip(val, Setting.CircleStrokeOpacity.min, Setting.CircleStrokeOpacity.max),
+    utils.clip(val, Setting.CircleStrokeOpacity.min, Setting.CircleStrokeOpacity.max),
   VectorStrokeWidth: (val: number): number =>
-    clip(val, Setting.VectorStrokeWidth.min, Setting.VectorStrokeWidth.max),
+    utils.clip(val, Setting.VectorStrokeWidth.min, Setting.VectorStrokeWidth.max),
   VectorStrokeOpacity: (val: number): number =>
-    clip(val, Setting.VectorStrokeOpacity.min, Setting.VectorStrokeOpacity.max),
+    utils.clip(val, Setting.VectorStrokeOpacity.min, Setting.VectorStrokeOpacity.max),
   PathStrokeWidth: (val: number): number =>
-    clip(val, Setting.PathStrokeWidth.min, Setting.PathStrokeWidth.max),
+    utils.clip(val, Setting.PathStrokeWidth.min, Setting.PathStrokeWidth.max),
   PathStrokeOpacity: (val: number): number =>
-    clip(val, Setting.PathStrokeOpacity.min, Setting.PathStrokeOpacity.max),
+    utils.clip(val, Setting.PathStrokeOpacity.min, Setting.PathStrokeOpacity.max),
 }
 
-function checkParsedSetting(parsed: any, setting: Setting): void {
-  if (!parsed) return
+function loadStoredSetting(storageKey: string): Setting {
+  const setting = Setting
+  const stored = localStorage.getItem(storageKey)
 
-  const keys = Object.keys(Setting) as Array<keyof Setting>
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored)
+      const keys = Object.keys(Setting) as Array<keyof Setting>
 
-  for (const key of keys) {
-    if (key in parsed) {
-      if (parsed[key].val) {
-        setting[key].val = clipper[key](parsed[key].val)
+      for (const key of keys) {
+        if (key in parsed) {
+          if (typeof parsed[key].val === typeof Setting[key].val) {
+            setting[key].val = settingClipper[key](parsed[key].val)
+          }
+        }
       }
+    } catch (error) {
+      console.error('Error parsing stored setting:', error, '\n- Fallback to Default Setting')
     }
   }
+
+  return setting
+}
+
+function saveSetting(key: string, setting: Setting): void {
+  localStorage.setItem(key, JSON.stringify(setting))
 }
 
 export const useSettingStore = defineStore('setting', () => {
   const STORAGE_KEY = 'setting'
-
-  const setting = ref<Setting>(Setting)
-
-  const storedSetting = localStorage.getItem(STORAGE_KEY) // get locally stored setting
-
-  if (storedSetting) {
-    const parsed = JSON.parse(storedSetting)
-    checkParsedSetting(parsed, setting.value)
-  }
-
-  watchEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(setting.value))
-  })
+  const setting = ref<Setting>(loadStoredSetting(STORAGE_KEY))
+  watchEffect(() => saveSetting(STORAGE_KEY, setting.value))
 
   function changeSetting(target: keyof Setting, val: number): void {
-    setting.value[target].val = clipper[target](val)
+    setting.value[target].val = settingClipper[target](val)
   }
 
   return { setting, changeSetting }

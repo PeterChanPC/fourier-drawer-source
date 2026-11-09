@@ -1,7 +1,7 @@
 <template>
   <Transition name="scale" mode="out-in">
     <nav v-if="toggled"
-      class="fixed r-0 flex flex-col w-auto h-auto max-h-80dvh mt-50 mr-10 ml-10 pt-20 pr-10 pb-20 pl-10 z-99 overflow-s no-scrollbar transform-origin-top-right border-radius-15 bg-glassy">
+      class="fixed r-0 flex flex-col w-auto h-auto max-h-80dvh mt-50 mr-10 ml-10 pt-20 pr-10 pb-20 pl-10 z-99 overflow-s no-scrollbar transform-origin-top-right border-radius-15 bg-glassy border">
       <span class="pl-10 pb-15 font-size-lg uppercase">Settings</span>
       <Slider :text="setting.N.name" :min="setting.N.min" :max="setting.N.max" :val="setting.N.val"
         :step="setting.N.step" :applyChange="changeN" />
@@ -33,7 +33,7 @@
 <script lang="ts">
 import { useSettingStore } from '@/stores/setting.store'
 import { defineComponent } from 'vue'
-import Slider from './slider.vue'
+import Slider from '@/components/slider.vue'
 
 export default defineComponent({
   name: 'settings',

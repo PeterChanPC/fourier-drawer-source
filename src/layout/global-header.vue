@@ -3,7 +3,6 @@
     <h1 class="absolute l-0 w-38 ml-16 mr-16 mt-auto mb-auto font-size-36 italic user-select-none">
       Pc
     </h1>
-
     <div class="relative flex row a-center j-around h-50 pr-16">
       <SwitchBtn class="w-50 h-50" :on-switch="themeStore.switchTheme" :is-active="themeStore.isDark"
         :img-left="icons.sun" :img-right="icons.moonStars" />
@@ -17,7 +16,7 @@
 
 <script lang="ts">
 import SwitchBtn from '@/components/switch-btn.vue'
-import Settings from '@/components/settings.vue'
+import Settings from '@/layout/settings.vue'
 import * as icons from '@/assets/img/d'
 import { useThemeStore } from '@/stores/theme.store'
 import { defineComponent, ref } from 'vue'

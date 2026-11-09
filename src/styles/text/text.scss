@@ -1,3 +1,17 @@
+@use '../variable' as var;
+
+.italic {
+  font-style: italic;
+}
+
+.oblique {
+  font-style: oblique;
+}
+
+.bold {
+  font-weight: bold;
+}
+
 .capitalize {
   text-transform: capitalize;
 }
@@ -37,5 +51,33 @@
 
   .lhem-1\.#{$i} {
     line-height: calc(1em + $i * 0.1em);
+  }
+}
+
+@each $label, $size in var.$font-sizes {
+  .font-size-#{$label} {
+    font-size: $size;
+  }
+}
+
+@for $i from 1 through 12 {
+  .font-size-#{$i * 4} {
+    font-size: $i * 4px;
+  }
+}
+
+@each $break-label, $break-pt in var.$break-pts {
+  @media (max-width: #{$break-pt}px) {
+    @each $font-label, $size in var.$font-sizes {
+      .#{$break-label}\:font-size-#{$font-label} {
+        font-size: $size;
+      }
+    }
+
+    @for $i from 1 through 12 {
+      .#{$break-label}\:font-size-#{$i * 4} {
+        font-size: $i * 4px;
+      }
+    }
   }
 }
