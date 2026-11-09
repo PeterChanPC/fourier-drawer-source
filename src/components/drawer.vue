@@ -1,9 +1,7 @@
 <template>
   <svg class="overflow-v" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"
     :viewBox="`0 0 ${viewboxWidth} ${viewboxHeight}`">
-    <g :transform="`scale(${scale})`">
-      <circle v-for="(prop, index) in circles" :r="prop.r" :cx="prop.cx" :cy="prop.cy" :key="index" fill="none"
-        stroke="currentColor" stroke-width="circleStrokeWidth" stroke-opacity="circleStrokeOpacity" />
+    <g :transform="`scale(${scale})`" class="transform-origin-center">
       <defs>
         <marker id="arrow" :view-box="`0
           0
@@ -14,17 +12,19 @@
           <path :d="`M 0 0 L ${vectorStrokeWidth + 3} ${(vectorStrokeWidth + 3) / 2} L 0 ${vectorStrokeWidth + 3} z`" />
         </marker>
       </defs>
-      <line v-for="(prop, index) in vectors" :x1="prop.x1" :x2="prop.x2" :y1="prop.y1" :y2="prop.y2" :key="index"
-        stroke="currentColor" stroke-width="vectorStrokeWidth" stroke-opacity="vectorStrokeOpacity"
+      <circle v-for="(prop, index) in circles" :r="prop.r" :cx="prop.cx" :cy="prop.cy" :key="`c${index}`" fill="none"
+        stroke="currentColor" :stroke-width="circleStrokeWidth" :stroke-opacity="circleStrokeOpacity" />
+      <line v-for="(prop, index) in vectors" :x1="prop.x1" :x2="prop.x2" :y1="prop.y1" :y2="prop.y2" :key="`v${index}`"
+        stroke="currentColor" :stroke-width="vectorStrokeWidth" :stroke-opacity="vectorStrokeOpacity"
         marker-end="url(#arrow)" />
-      <path fill="none" stroke="currentColor" stroke-width="pathStrokeWidth" stroke-opacity="pathStrokeOpacity"
+      <path fill="none" stroke="currentColor" :stroke-width="pathStrokeWidth" :stroke-opacity="pathStrokeOpacity"
         :d="d" />
     </g>
   </svg>
 </template>
 
 <script lang="ts">
-import { ref, defineComponent, computed } from 'vue'
+import { ref, defineComponent, computed, watch } from 'vue'
 
 export default defineComponent({
   name: 'drawer',
@@ -79,7 +79,6 @@ export default defineComponent({
     },
   },
   setup(props, { expose }) {
-    console.log(props.pathStrokeWidth)
     const viewboxCenterX = props.viewboxWidth / 2
     const viewboxCenterY = props.viewboxHeight / 2
 
@@ -158,7 +157,7 @@ export default defineComponent({
 
       t += dt.value
 
-      if (t <= 2.01 * Math.PI) {
+      if (t <= 4 * Math.PI) {
         d.value += `${prevCx} ${prevCy} `
       }
       requestAnimationFrame(animate)

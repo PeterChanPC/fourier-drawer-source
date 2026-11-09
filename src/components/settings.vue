@@ -3,22 +3,29 @@
     <nav v-if="toggled"
       class="fixed r-0 flex flex-col w-auto h-auto max-h-80dvh mt-50 mr-10 ml-10 pt-20 pr-10 pb-20 pl-10 z-99 overflow-s no-scrollbar transform-origin-top-right border-radius-15 bg-glassy">
       <span class="pl-10 pb-15 font-size-lg uppercase">Settings</span>
-      <Slider :text="setting.Speed.name" :min="0.1" :max="setting.Speed.max" :val="setting.Speed.val" :step="0.1"
-        :applyChange="changeSpeed" />
-      <Slider :text="setting.Scale.name" :min="0.1" :max="setting.Scale.max" :val="setting.Scale.val" :step="0.1"
-        :applyChange="changeScale" />
-      <Slider :text="setting.CircleStrokeWidth.name" :min="0.1" :max="setting.CircleStrokeWidth.max"
-        :val="setting.CircleStrokeWidth.val" :step="0.1" :applyChange="changeCircleStrokeWidth" />
-      <Slider :text="setting.CircleStrokeOpacity.name" :min="0.1" :max="setting.CircleStrokeOpacity.max"
-        :val="setting.CircleStrokeOpacity.val" :step="0.1" :applyChange="changeCircleStrokeOpacity" />
-      <Slider :text="setting.VectorStrokeWidth.name" :min="0.1" :max="setting.VectorStrokeWidth.max"
-        :val="setting.VectorStrokeWidth.val" :step="0.1" :applyChange="changeVectorStrokeWidth" />
-      <Slider :text="setting.VectorStrokeOpacity.name" :min="0.1" :max="setting.VectorStrokeOpacity.max"
-        :val="setting.VectorStrokeOpacity.val" :step="0.1" :applyChange="changeVectorStrokeOpacity" />
-      <Slider :text="setting.PathStrokeWidth.name" :min="0.1" :max="setting.PathStrokeWidth.max"
-        :val="setting.PathStrokeWidth.val" :step="0.1" :applyChange="changePathStrokeWidth" />
-      <Slider :text="setting.PathStrokeOpacity.name" :min="0.1" :max="setting.PathStrokeOpacity.max"
-        :val="setting.PathStrokeOpacity.val" :step="0.1" :applyChange="changePathStrokeOpacity" />
+      <Slider :text="setting.N.name" :min="setting.N.min" :max="setting.N.max" :val="setting.N.val"
+        :step="setting.N.step" :applyChange="changeN" />
+      <Slider :text="setting.Speed.name" :min="setting.Speed.min" :max="setting.Speed.max" :val="setting.Speed.val"
+        :step="setting.Speed.step" :applyChange="changeSpeed" />
+      <Slider :text="setting.Scale.name" :min="setting.Scale.min" :max="setting.Scale.max" :val="setting.Scale.val"
+        :step="setting.Scale.step" :applyChange="changeScale" />
+      <Slider :text="setting.CircleStrokeWidth.name" :min="setting.CircleStrokeWidth.min"
+        :max="setting.CircleStrokeWidth.max" :val="setting.CircleStrokeWidth.val" :step="setting.CircleStrokeWidth.step"
+        :applyChange="changeCircleStrokeWidth" />
+      <Slider :text="setting.CircleStrokeOpacity.name" :min="setting.CircleStrokeOpacity.min"
+        :max="setting.CircleStrokeOpacity.max" :val="setting.CircleStrokeOpacity.val"
+        :step="setting.CircleStrokeOpacity.step" :applyChange="changeCircleStrokeOpacity" />
+      <Slider :text="setting.VectorStrokeWidth.name" :min="setting.VectorStrokeWidth.min"
+        :max="setting.VectorStrokeWidth.max" :val="setting.VectorStrokeWidth.val" :step="setting.VectorStrokeWidth.step"
+        :applyChange="changeVectorStrokeWidth" />
+      <Slider :text="setting.VectorStrokeOpacity.name" :min="setting.VectorStrokeOpacity.min"
+        :max="setting.VectorStrokeOpacity.max" :val="setting.VectorStrokeOpacity.val"
+        :step="setting.VectorStrokeOpacity.step" :applyChange="changeVectorStrokeOpacity" />
+      <Slider :text="setting.PathStrokeWidth.name" :min="setting.PathStrokeWidth.min" :max="setting.PathStrokeWidth.max"
+        :val="setting.PathStrokeWidth.val" :step="setting.PathStrokeWidth.step" :applyChange="changePathStrokeWidth" />
+      <Slider :text="setting.PathStrokeOpacity.name" :min="setting.PathStrokeOpacity.min"
+        :max="setting.PathStrokeOpacity.max" :val="setting.PathStrokeOpacity.val" :step="setting.PathStrokeOpacity.step"
+        :applyChange="changePathStrokeOpacity" />
     </nav>
   </Transition>
 </template>
@@ -79,6 +86,7 @@ export default defineComponent({
 
     return {
       setting,
+      changeN,
       changeSpeed,
       changeScale,
       changeCircleStrokeWidth,
