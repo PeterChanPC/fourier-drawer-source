@@ -4,16 +4,7 @@
   </nav>
 </template>
 
-<script lang="ts">
-import { RouterLink } from 'vue-router'
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'sidebar',
-  components: {},
-  props: {},
-  setup() {},
-})
+<script setup lang="ts">
 </script>
 
 <style scoped lang="scss"></style>

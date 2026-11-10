@@ -1,25 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, watchEffect } from 'vue'
 import { Setting } from './d'
-import * as utils from '@/utils/utils'
-
-const settingClipper = {
-  N: (val: number): number => utils.clip(val, Setting.N.min, Setting.N.max),
-  Speed: (val: number): number => utils.clip(val, Setting.Speed.min, Setting.Speed.max),
-  Scale: (val: number): number => utils.clip(val, Setting.Scale.min, Setting.Scale.max),
-  CircleStrokeWidth: (val: number): number =>
-    utils.clip(val, Setting.CircleStrokeWidth.min, Setting.CircleStrokeWidth.max),
-  CircleStrokeOpacity: (val: number): number =>
-    utils.clip(val, Setting.CircleStrokeOpacity.min, Setting.CircleStrokeOpacity.max),
-  VectorStrokeWidth: (val: number): number =>
-    utils.clip(val, Setting.VectorStrokeWidth.min, Setting.VectorStrokeWidth.max),
-  VectorStrokeOpacity: (val: number): number =>
-    utils.clip(val, Setting.VectorStrokeOpacity.min, Setting.VectorStrokeOpacity.max),
-  PathStrokeWidth: (val: number): number =>
-    utils.clip(val, Setting.PathStrokeWidth.min, Setting.PathStrokeWidth.max),
-  PathStrokeOpacity: (val: number): number =>
-    utils.clip(val, Setting.PathStrokeOpacity.min, Setting.PathStrokeOpacity.max),
-}
 
 function loadStoredSetting(storageKey: string): Setting {
   const setting = Setting
@@ -33,7 +14,7 @@ function loadStoredSetting(storageKey: string): Setting {
       for (const key of keys) {
         if (key in parsed) {
           if (typeof parsed[key].val === typeof Setting[key].val) {
-            setting[key].val = settingClipper[key](parsed[key].val)
+            setting[key].val = setting[key].clipper(parsed[key].val)
           }
         }
       }
@@ -55,7 +36,7 @@ export const useSettingStore = defineStore('setting', () => {
   watchEffect(() => saveSetting(STORAGE_KEY, setting.value))
 
   function changeSetting(target: keyof Setting, val: number): void {
-    setting.value[target].val = settingClipper[target](val)
+    setting.value[target].val = setting.value[target].clipper(val)
   }
 
   return { setting, changeSetting }

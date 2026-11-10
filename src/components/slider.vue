@@ -3,73 +3,60 @@
     <div class="flex a-center j-between w-full pb-5">
       <span v-if="text" class="pr-30">{{ text }}:</span>
       <div class="relative flex a-center j-between">
-        <button class="relative l-0" @click="minus()">
+        <button @click="minus" class="relative l-0">
           <img :src="icons.minus" alt="Minus" />
         </button>
-        <input class="wem-20 ml-5 mr-5 border-bottom txt-center no-spin-btn" type="number" :min="min" :max="max"
-          v-model.number="input" :step="step" />
-        <button class="relative r-0 w-20 h-20" @click="add()">
+        <input v-model.number="input" type="number" :min="min" :max="max" :step="step"
+          class="wem-20 ml-5 mr-5 border-bottom txt-center no-spin-btn" />
+        <button @click="add" class="relative r-0 w-20 h-20">
           <img :src="icons.plus" alt="Plus" />
         </button>
       </div>
     </div>
-    <input class="w-full" type="range" :min="min" :max="max" v-model.number="input" :step="step" />
+    <input type="range" :min="min" :max="max" v-model.number="input" :step="step" class="w-full" />
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, watch, type PropType } from 'vue'
+<script setup lang="ts">
+import { ref, watch } from 'vue'
 import * as icons from '@/assets/img/d'
 
-export default defineComponent({
-  name: 'slider',
-  props: {
-    text: {
-      type: String,
-      default: '',
-    },
-    min: {
-      type: Number,
-      default: 0,
-    },
-    max: {
-      type: Number,
-      default: 0,
-    },
-    val: {
-      type: Number,
-      default: 0,
-    },
-    step: {
-      type: Number,
-      default: 0,
-    },
-    applyChange: {
-      type: Function as PropType<(arg: number) => void>,
-      default: () => { },
-    },
+const props = defineProps({
+  text: {
+    type: String,
+    default: '',
   },
-  setup(props, { expose }) {
-    const input = ref<number>(props.val)
-
-    function add() {
-      input.value += props.step
-    }
-
-    function minus() {
-      input.value -= props.step
-    }
-
-    watch(input, () => {
-      props.applyChange(input.value)
-      input.value = props.val
-    })
-
-    expose()
-
-    return { icons, input, add, minus }
+  min: {
+    type: Number,
+    default: 0,
+  },
+  max: {
+    type: Number,
+    default: 0,
+  },
+  val: {
+    type: Number,
+    default: 0,
+  },
+  step: {
+    type: Number,
+    default: 0,
   },
 })
+
+const emit = defineEmits(['slide'])
+
+const input = ref<number>(props.val)
+
+function add(): void {
+  input.value += props.step
+}
+
+function minus(): void {
+  input.value -= props.step
+}
+
+watch(input, () => emit('slide', input.value))
 </script>
 
 <style lang="scss" scoped></style>

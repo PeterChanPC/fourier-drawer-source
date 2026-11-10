@@ -3,7 +3,7 @@ import { ref, computed, watchEffect } from 'vue'
 import { Theme } from './d'
 
 function loadStoredTheme(storageKey: string): Theme {
-  const stored = localStorage.getItem(storageKey)
+  const stored: string | null = localStorage.getItem(storageKey)
   if (!stored) {
     return Theme.Light
   }
@@ -25,7 +25,7 @@ function saveTheme(key: string, theme: Theme): void {
 }
 
 export const useThemeStore = defineStore('theme', () => {
-  const STORAGE_KEY = 'theme'
+  const STORAGE_KEY: string = 'theme'
   const theme = ref<Theme>(loadStoredTheme(STORAGE_KEY))
   watchEffect(() => saveTheme(STORAGE_KEY, theme.value))
 
